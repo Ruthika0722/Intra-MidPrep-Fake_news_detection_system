@@ -4,7 +4,7 @@
 
 <!-- TODO: add a screenshot: ![TruthLens](docs/screenshots/analyze.png) -->
 
-**Hackathon:** `<hackathon name>` · **Team:** `<team name / members>` · **Demo:** `<video or live link>`
+**Hackathon:** Intra IIT Tech Meet 1.0 · **Demo:** `<video or live link>`
 
 ---
 
@@ -24,6 +24,14 @@ Misinformation spreads faster than moderators and fact-checkers can read it. A p
 | **History & reports** | Browse past cases and export CSV or PDF (whole session or a single case). |
 | **UI extras** | Light/dark theme, confidence shown as % or decimal, responsible-use notices, and a warning before closing the tab so session data isn't lost. |
 
+
+### Dataset and evaluation setup
+
+- **Dataset:** LIAR and ISOT
+- **Task:** binary classification of news-style text (label 1 = REAL, label 0 = FAKE)
+- **Split:** 70 : 15 : 15 (train / validation / test). Deduplication and train/validation/test overlap removal are applied after splitting, so the final row counts differ slightly from the nominal ratio.
+- **Features:** 773 per article (768 DistilBERT embedding + 5 linguistic features)
+  
 ## Model performance
 
 XGBoost classifier, evaluated on the held-out test split:
@@ -136,12 +144,11 @@ python main.py     # interactive: analyse one article or a CSV of articles
 | `ML backend not found` | Run from the repo root, or set `TRUTHLENS_BACKEND` to the folder containing `xgboost_model.json` |
 | Hangs / fails on first analysis | DistilBERT needs internet once to download |
 
-## Current limitations
+## Current limitations and future plan
 
-- **Batch upload in the web UI is not implemented yet** (the tab shows "coming soon"). Batch analysis works through the CLI in `backend/main.py`.
 - **This is a triage aid, not a fact-checker.** It scores writing patterns and semantics learned from training data; it does not verify claims against external sources. Every verdict is meant to be reviewed by a human.
 - The source-credibility table is small (about 20 outlets) and hand-set; unknown sources default to 0.5.
-- Results are stored in a local CSV; there is no database or multi-user support.
+- Results are stored in a local CSV; there is no database or multi-user support. Can be moved to a database system where user can have a secure and private usage of the app.
 
 ## Responsible use
 
@@ -153,8 +160,6 @@ TruthLens supports human review; it should not be the sole basis for removing co
 - Retrieval-based claim checking against trusted sources
 - Larger, data-driven source-credibility scoring
 - Persistent storage and multi-reviewer accounts
-
-## Team
 
 `<Name — role>` · `<Name — role>` · `<Name — role>`
 
